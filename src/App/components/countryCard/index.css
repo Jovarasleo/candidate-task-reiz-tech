@@ -1,0 +1,17 @@
+.card {
+  background-color: var(--themeSecondary);
+  margin-bottom: 15px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.card p {
+  margin: 0;
+  display: inline-block;
+  background-color: var(--gray100);
+  padding: 2px 25px;
+  color: white;
+}
+.card > div:not(:last-child) {
+  margin-bottom: 5px;
+}

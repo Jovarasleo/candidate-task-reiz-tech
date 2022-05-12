@@ -1,0 +1,15 @@
+.btn {
+  background-color: var(--button);
+  border: none;
+  padding: 10px;
+  border-radius: 15px;
+  color: var(--gray300);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  border: 2px solid transparent;
+}
+.selected {
+  background-color: rgb(255, 255, 255);
+  border: 2px solid var(--gray500);
+}

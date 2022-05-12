@@ -1,0 +1,30 @@
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.console__Container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.filters button:not(:last-child) {
+  margin-right: 20px;
+}
+.pageBtn__Container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.pageBtn__Container button {
+  width: 25px;
+  padding: 2px;
+  cursor: pointer;
+  border: 1px solid var(--gray300);
+  background-color: var(--gray300);
+  color: white;
+}
+.pageBtn__Container .currentPage {
+  background-color: rgb(255, 255, 255);
+  color: var(--gray500);
+}
