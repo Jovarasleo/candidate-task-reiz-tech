@@ -1,10 +1,17 @@
 .btn {
-  background-color: var(--button);
+  background: none;
+  color: inherit;
   border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+.filters__btn {
+  background-color: var(--button);
   padding: 10px;
   border-radius: 15px;
   color: var(--gray300);
-  cursor: pointer;
   font-weight: 700;
   font-size: 14px;
   border: 2px solid transparent;
@@ -12,4 +19,15 @@
 .selected {
   background-color: rgb(255, 255, 255);
   border: 2px solid var(--gray500);
+}
+.pagination__btn {
+  width: 25px;
+  padding: 2px;
+  border: 1px solid var(--gray300);
+  background-color: var(--gray300);
+  color: white;
+}
+.current {
+  background-color: rgb(255, 255, 255);
+  color: var(--gray500);
 }

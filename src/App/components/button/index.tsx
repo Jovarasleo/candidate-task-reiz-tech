@@ -1,12 +1,13 @@
 import "./index.css";
 interface btnProps {
   children: string;
-  onClick?: any;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   className?: string;
 }
 function Button({ children, onClick, className }: btnProps) {
+  let classNames = className ? ["btn", className].join(" ") : "btn";
   return (
-    <button className={`btn ${className}`} onClick={onClick}>
+    <button className={classNames} onClick={onClick}>
       {children}
     </button>
   );

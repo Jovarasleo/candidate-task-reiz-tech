@@ -1,6 +1,7 @@
 import { useEffect, useCallback, useState } from "react";
 import CountryCard from "./components/countryCard";
 import Button from "./components/button";
+import FetchAPI from "./fetchAPI";
 import "./App.css";
 
 interface countriesData {
@@ -18,7 +19,7 @@ function App() {
   const [endTo, setEndTo] = useState(10);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<any>(false);
+  const [error, setError] = useState("");
 
   const selectPage = useCallback(
     (increment: number) => {
@@ -31,19 +32,18 @@ function App() {
 
   const getData = useCallback(async () => {
     try {
-      const response = await fetch(
+      const responseData = await FetchAPI(
         "https://restcountries.com/v2/all?fields=name,region,area"
       );
-      const responseData = await response.json();
-      if (responseData) {
+      if (responseData.length) {
         setData(responseData);
         setLoading(false);
       } else {
-        setError("fetch failed");
+        setError("Request Failed");
         setLoading(false);
       }
     } catch (error) {
-      setError(error);
+      setError("Request Failed");
       setLoading(false);
     }
   }, [setData, setError]);
@@ -82,23 +82,23 @@ function App() {
 
   return (
     <div className="App">
-      <div className="console__Container">
-        <div className="filters">
+      <div className="console">
+        <div className="console__filters">
           <Button
             onClick={() => setFilterSize(!filterSize)}
-            className={filterSize ? "selected" : ""}
+            className={filterSize ? "filters__btn selected" : "filters__btn"}
           >
             {"Smaller than Lithuania by area"}
           </Button>
           <Button
             onClick={() => setFilterRegion(!filterRegion)}
-            className={filterRegion ? "selected" : ""}
+            className={filterRegion ? "filters__btn selected" : "filters__btn"}
           >
             {"Oceania region"}
           </Button>
         </div>
-        <div className="sorting">
-          <Button onClick={() => sortList()}>
+        <div className="console__filters">
+          <Button onClick={() => sortList()} className={"filters__btn"}>
             {sort ? "Descending" : "Ascending"}
           </Button>
         </div>
@@ -112,18 +112,20 @@ function App() {
             <CountryCard name={name} area={area} region={region} key={index} />
           );
         })}
-      <div className="pageBtn__Container">
+      <div className="pagination">
         {Array(pageCount)
           .fill(0)
           .map((_, i) => {
             return (
-              <button
+              <Button
                 key={i}
                 onClick={() => selectPage(i)}
-                className={i === page ? "currentPage" : ""}
+                className={
+                  i === page ? "pagination__btn current" : "pagination__btn"
+                }
               >
-                {i + 1}
-              </button>
+                {`${i + 1}`}
+              </Button>
             );
           })}
       </div>
