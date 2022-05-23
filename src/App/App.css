@@ -2,6 +2,9 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
 }
 .console {
   display: flex;
@@ -10,6 +13,9 @@
 }
 .console__filters button:not(:last-child) {
   margin-right: 20px;
+}
+.cards__container {
+  flex: 1;
 }
 .pagination {
   display: flex;

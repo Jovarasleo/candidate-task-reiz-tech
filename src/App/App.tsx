@@ -2,9 +2,11 @@ import { useEffect, useCallback, useState } from "react";
 import CountryCard from "./components/countryCard";
 import Button from "./components/button";
 import FetchAPI from "./fetchAPI";
+import DataFilter from "./utility/dataFilter";
+import Spiner from "./components/spinner";
 import "./App.css";
 
-interface countriesData {
+export interface countriesData {
   name: string;
   region: string;
   area: number;
@@ -53,17 +55,11 @@ function App() {
     setData(data.reverse());
   };
 
-  const filteredData = data
-    .filter((country: countriesData) => {
-      if (filterSize) {
-        return country.area < 65300;
-      } else return country;
-    })
-    .filter((country: countriesData) => {
-      if (filterRegion) {
-        return country.region === "Oceania";
-      } else return country;
-    });
+  const filteredData: Array<countriesData> = DataFilter(
+    filterSize,
+    filterRegion,
+    data
+  );
 
   let pageCount: number = Math.ceil(filteredData.length / 10);
 
@@ -104,14 +100,21 @@ function App() {
         </div>
       </div>
       {error ? <div>{error}</div> : null}
-      {loading ? <div>Loading...</div> : null}
-      {filteredData
-        .slice(startFrom, endTo)
-        .map(({ name, region, area }: countriesData, index) => {
-          return (
-            <CountryCard name={name} area={area} region={region} key={index} />
-          );
-        })}
+      <div className="cards__container">
+        {loading ? <Spiner /> : null}
+        {filteredData
+          .slice(startFrom, endTo)
+          .map(({ name, region, area }: countriesData, index: number) => {
+            return (
+              <CountryCard
+                name={name}
+                area={area}
+                region={region}
+                key={index}
+              />
+            );
+          })}
+      </div>
       <div className="pagination">
         {Array(pageCount)
           .fill(0)
