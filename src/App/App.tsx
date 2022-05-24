@@ -4,6 +4,7 @@ import Button from "./components/button";
 import FetchAPI from "./utility/fetchAPI";
 import DataFilter from "./utility/dataFilter";
 import Spiner from "./components/spinner";
+import Pagination from "./components/pagination";
 import "./App.css";
 
 export interface countriesData {
@@ -19,17 +20,17 @@ function App() {
   const [filterSize, setFilterSize] = useState(false);
   const [startFrom, setStartFrom] = useState(0);
   const [endTo, setEndTo] = useState(10);
-  const [page, setPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const selectPage = useCallback(
     (increment: number) => {
-      setPage(increment);
+      setCurrentPage(increment);
       setStartFrom(increment * 10);
       setEndTo((increment + 1) * 10);
     },
-    [setPage, setStartFrom, setEndTo]
+    [setCurrentPage, setStartFrom, setEndTo]
   );
 
   const getData = useCallback(async () => {
@@ -64,15 +65,14 @@ function App() {
         })
       );
       setData(sortASC);
-      setSort(false);
     }
     if (!sort) {
       const sortDSC = data.sort((a, b) =>
         b.name.localeCompare(a.name, "en", { ignorePunctuation: true })
       );
       setData(sortDSC);
-      setSort(true);
     }
+    setSort(!sort);
   };
 
   let pageCount: number = Math.ceil(filteredData.length / 10);
@@ -84,11 +84,11 @@ function App() {
   }, [getData, loading]);
 
   useEffect(() => {
-    if (page <= pageCount) return;
+    if (currentPage <= pageCount) return;
     else {
       selectPage(pageCount - 1);
     }
-  }, [pageCount, page, selectPage]);
+  }, [pageCount, currentPage, selectPage]);
 
   return (
     <div className="App">
@@ -129,23 +129,11 @@ function App() {
             );
           })}
       </div>
-      <div className="pagination">
-        {Array(pageCount)
-          .fill(0)
-          .map((_, i) => {
-            return (
-              <Button
-                key={i}
-                onClick={() => selectPage(i)}
-                className={
-                  i === page ? "pagination__btn current" : "pagination__btn"
-                }
-              >
-                {`${i + 1}`}
-              </Button>
-            );
-          })}
-      </div>
+      <Pagination
+        pageCount={pageCount}
+        currentPage={currentPage}
+        changePage={selectPage}
+      />
     </div>
   );
 }

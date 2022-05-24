@@ -17,8 +17,3 @@
 .cards__container {
   flex: 1;
 }
-.pagination {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
