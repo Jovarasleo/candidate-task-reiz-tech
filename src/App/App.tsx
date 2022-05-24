@@ -10,7 +10,6 @@ export interface countriesData {
   name: string;
   region: string;
   area: number;
-  localeCompare?: any;
 }
 
 function App() {
