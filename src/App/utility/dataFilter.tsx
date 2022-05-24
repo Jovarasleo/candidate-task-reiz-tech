@@ -5,10 +5,13 @@ function DataFilter(
   filterRegion: Boolean,
   data: Array<countriesData>
 ) {
+  const lithuania = data.find((country) => country.name === "Lithuania");
   return data
     .filter((country) => {
       if (filterSize) {
-        return country.area < 65300;
+        if (lithuania) {
+          return country.area < lithuania.area;
+        } else return country;
       } else return country;
     })
     .filter((country) => {

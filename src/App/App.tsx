@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState } from "react";
 import CountryCard from "./components/countryCard";
 import Button from "./components/button";
-import FetchAPI from "./fetchAPI";
+import FetchAPI from "./utility/fetchAPI";
 import DataFilter from "./utility/dataFilter";
 import Spiner from "./components/spinner";
 import "./App.css";
@@ -10,10 +10,11 @@ export interface countriesData {
   name: string;
   region: string;
   area: number;
+  localeCompare?: any;
 }
 
 function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<countriesData[]>([]);
   const [sort, setSort] = useState(false);
   const [filterRegion, setFilterRegion] = useState(false);
   const [filterSize, setFilterSize] = useState(false);
@@ -50,16 +51,30 @@ function App() {
     }
   }, [setData, setError]);
 
-  const sortList = () => {
-    setSort(!sort);
-    setData(data.reverse());
-  };
-
   const filteredData: Array<countriesData> = DataFilter(
     filterSize,
     filterRegion,
     data
   );
+
+  const sortList = () => {
+    if (sort) {
+      const sortASC = data.sort((a, b) =>
+        a.name.localeCompare(b.name, "en", {
+          ignorePunctuation: true,
+        })
+      );
+      setData(sortASC);
+      setSort(false);
+    }
+    if (!sort) {
+      const sortDSC = data.sort((a, b) =>
+        b.name.localeCompare(a.name, "en", { ignorePunctuation: true })
+      );
+      setData(sortDSC);
+      setSort(true);
+    }
+  };
 
   let pageCount: number = Math.ceil(filteredData.length / 10);
 
@@ -95,7 +110,7 @@ function App() {
         </div>
         <div className="console__filters">
           <Button onClick={() => sortList()} className={"filters__btn"}>
-            {sort ? "Descending" : "Ascending"}
+            {sort ? "DSC" : "ASC"}
           </Button>
         </div>
       </div>
