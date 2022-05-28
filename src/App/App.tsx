@@ -75,7 +75,7 @@ function App() {
     setSort(!sort);
   };
 
-  let pageCount: number = Math.ceil(filteredData.length / 10);
+  const pageCount: number = Math.ceil(filteredData.length / 10);
 
   useEffect(() => {
     if (loading) {

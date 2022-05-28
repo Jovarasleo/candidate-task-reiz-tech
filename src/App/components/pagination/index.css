@@ -3,3 +3,23 @@
   flex-wrap: wrap;
   gap: 5px;
 }
+.arrow {
+  cursor: pointer;
+  position: relative;
+  width: 12px;
+  font-size: 40px;
+  font-weight: 600;
+  height: 26px;
+}
+.arrow__left::before {
+  content: "\2039";
+  vertical-align: middle;
+  position: absolute;
+  top: -65%;
+}
+.arrow__right::before {
+  content: "\203A";
+  vertical-align: middle;
+  position: absolute;
+  top: -65%;
+}
