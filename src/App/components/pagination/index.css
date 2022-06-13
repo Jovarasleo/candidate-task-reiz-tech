@@ -2,8 +2,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
+  user-select: none;
 }
-.arrow {
+.pagination__arrow {
   cursor: pointer;
   position: relative;
   width: 12px;
@@ -11,15 +12,30 @@
   font-weight: 600;
   height: 26px;
 }
-.arrow__left::before {
+.arrow--left::before {
   content: "\2039";
   vertical-align: middle;
   position: absolute;
   top: -65%;
 }
-.arrow__right::before {
+
+.arrow--right::before {
   content: "\203A";
   vertical-align: middle;
   position: absolute;
   top: -65%;
+}
+.arrow--inactive {
+  color: var(--inactive);
+}
+.pagination__endpoint {
+  display: flex;
+  gap: 5px;
+}
+.endpoint--spacer {
+  line-height: 30px;
+  height: 26px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-left: 2px;
 }

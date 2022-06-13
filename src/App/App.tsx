@@ -84,9 +84,11 @@ function App() {
   }, [getData, loading]);
 
   useEffect(() => {
-    if (currentPage <= pageCount) return;
+    if (currentPage < pageCount) return;
+    if (currentPage === 0) return;
     else {
       selectPage(pageCount - 1);
+      console.log(currentPage, pageCount);
     }
   }, [pageCount, currentPage, selectPage]);
 

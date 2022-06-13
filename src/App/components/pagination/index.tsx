@@ -1,71 +1,70 @@
 import Button from "../button";
-import { useState, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./index.css";
 interface paginationProps {
   pageCount: number;
   currentPage: number;
-  changePage: (i: number) => void;
+  changePage: (i: number) => void | null;
 }
 function Pagination({ pageCount, currentPage, changePage }: paginationProps) {
-  const point = useRef(0);
   const visibleNumbers = 5;
+  const [position, setPosition] = useState(0);
   const [startFrom, setStartFrom] = useState(0);
   const [endTo, setEndTo] = useState(visibleNumbers);
+
   const nextPage = (value: number) => {
     handleClick(value);
   };
-  const handleClick = (i: number) => {
-    point.current = i;
-    changePage(point.current);
-    console.log(i, point, currentPage);
-    if (point.current + 1 === endTo && endTo < pageCount) {
-      console.log("inside if");
-      setStartFrom(startFrom + 1);
-      setEndTo(endTo + 1);
-    }
-    if (point.current === startFrom && startFrom > 0) {
-      console.log("inside if");
-      setStartFrom(startFrom - 1);
-      setEndTo(endTo - 1);
-    }
-    if (point.current === 0) {
-      console.log("inside if");
-      setStartFrom(0);
-      setEndTo(visibleNumbers);
-    }
-    if (point.current === pageCount - 1) {
-      console.log("inside if");
-      setStartFrom(pageCount - visibleNumbers);
-      setEndTo(pageCount);
-    }
-  };
+  const handleClick = useCallback(
+    (i: number) => {
+      setPosition(i);
+      changePage(i);
+      if (i + 1 === endTo && endTo < pageCount) {
+        setStartFrom(startFrom + 1);
+        setEndTo(endTo + 1);
+      }
+      if (i === startFrom && startFrom > 0) {
+        setStartFrom(startFrom - 1);
+        setEndTo(endTo - 1);
+      }
+      if (i === 0) {
+        setStartFrom(0);
+        setEndTo(visibleNumbers);
+      }
+      if (i === pageCount - 1) {
+        setStartFrom(pageCount - visibleNumbers);
+        setEndTo(pageCount);
+      }
+      if (pageCount < visibleNumbers) {
+        setStartFrom(0);
+        setEndTo(visibleNumbers);
+      }
+    },
+    [changePage, endTo, pageCount, startFrom]
+  );
+
+  useEffect(() => {
+    handleClick(currentPage);
+  }, [pageCount, currentPage, handleClick]);
+
   return (
     <div className="pagination">
-      <div
-        style={point.current === 0 ? { color: "grey" } : {}}
-        className="arrow arrow__left"
-        onClick={
-          point.current > 0
-            ? () => nextPage(point.current - 1)
-            : () => void point.current
-        }
-      ></div>
+      {pageCount ? (
+        <div
+          className={
+            position === 0
+              ? "pagination__arrow arrow--left arrow--inactive"
+              : "pagination__arrow arrow--left"
+          }
+          onClick={position > 0 ? () => nextPage(position - 1) : () => null}
+        ></div>
+      ) : null}
       {startFrom > 0 ? (
-        <div style={{ display: "flex", gap: "5px" }}>
-          <Button className={"pagination__btn"} onClick={() => handleClick(0)}>
+        <div className="pagination__endpoint">
+          <Button className="pagination__btn" onClick={() => handleClick(0)}>
             1
           </Button>
-          <div
-            style={{
-              lineHeight: "25px",
-              height: "25px",
-              width: "26px",
-              textAlign: "center",
-              fontWeight: 600,
-            }}
-          >
-            . . .
-          </div>
+          {startFrom > 1 ? <div className="endpoint--spacer">...</div> : null}
         </div>
       ) : null}
 
@@ -88,33 +87,28 @@ function Pagination({ pageCount, currentPage, changePage }: paginationProps) {
         })
         .slice(startFrom, endTo)}
       {endTo < pageCount ? (
-        <div style={{ display: "flex", gap: "5px" }}>
-          <div
-            style={{
-              lineHeight: "25px",
-              height: "25px",
-              width: "26px",
-              textAlign: "center",
-              fontWeight: 600,
-            }}
-          >
-            . . .
-          </div>
+        <div className="pagination__endpoint">
+          {endTo < pageCount - 1 ? (
+            <div className="endpoint--spacer">...</div>
+          ) : null}
           <Button
-            className={"pagination__btn"}
+            className="pagination__btn"
             onClick={() => handleClick(pageCount - 1)}
           >{`${pageCount}`}</Button>
         </div>
       ) : null}
-      <div
-        style={point.current === pageCount - 1 ? { color: "grey" } : {}}
-        className="arrow arrow__right"
-        onClick={
-          point.current < pageCount - 1
-            ? () => nextPage(point.current + 1)
-            : () => void point.current
-        }
-      ></div>
+      {pageCount ? (
+        <div
+          className={
+            position === pageCount - 1
+              ? "pagination__arrow arrow--right arrow--inactive"
+              : "pagination__arrow arrow--right"
+          }
+          onClick={
+            position < pageCount - 1 ? () => nextPage(position + 1) : () => null
+          }
+        ></div>
+      ) : null}
     </div>
   );
 }

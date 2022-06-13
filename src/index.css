@@ -6,6 +6,8 @@
   --gray100: rgb(126, 149, 126);
   --gray300: rgb(77, 77, 77);
   --gray500: rgb(46, 46, 46);
+  --inactive: rgb(186, 186, 186);
+  --white: rgb(255, 255, 255);
 }
 * {
   box-sizing: border-box;

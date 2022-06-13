@@ -17,7 +17,7 @@
   border: 2px solid transparent;
 }
 .selected {
-  background-color: rgb(255, 255, 255);
+  background-color: var(--white);
   border: 2px solid var(--gray500);
 }
 .pagination__btn {
@@ -25,9 +25,9 @@
   padding: 2px;
   border: 1px solid var(--gray300);
   background-color: var(--gray300);
-  color: white;
+  color: var(--white);
 }
 .current {
-  background-color: rgb(255, 255, 255);
+  background-color: var(--white);
   color: var(--gray500);
 }
